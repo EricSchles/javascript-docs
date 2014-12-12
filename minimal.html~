@@ -1,4 +1,8 @@
-/*
+<html>
+<head>
+<script src="file://~/Documents/syncanoStuff/javascript_docs/signon_data.jsonp"></script>
+<script type="text/javascript">
+  /*
 Minimal application with javascript and syncano
 */
 
@@ -11,25 +15,32 @@ syncano.connect(relevant_data, function(auth){
 
 //Save Data
 
-syncano.Data.new( [Project-ID], 'Default', {title: "My title"} , function() { console.log("Saved!") });
+syncano.Data.new( "3968", 'Default', {title: "My title"} , function() { console.log("Saved!") });
 
 //explain all of this - none of it makes any sense
-syncano.Data.get( [Project-ID], 'Default', {order: 'DESC'}, function(list) {
+syncano.Data.get( "3968", 'Default', {order: 'DESC'}, function(list) {
     if (list.length) {
 	console.log('Last object: ' + list[0].title);
     } else {
 	console.log("No stored objects!");
-	});
+  }
+});
     
 //Subscribe to Real-Time Updates
 
 syncano.connect( relevant_data, function(auth) {
-    syncano.Subscription.subscribeProject([Project-ID], function(result) { 
+    syncano.Subscription.subscribeProject("3968", function(result) { 
 	console.log("Suscribed");
     })
 });
-syncano.on('syncano:newdata:project-PROJECT-ID', function(data) {
+syncano.on('syncano:newdata:project-3968', function(data) {
     if (data) {
 	console.log('Data: ' + data);
 	}
     });
+
+</script>
+</head>
+<body>
+</body>
+</html>
