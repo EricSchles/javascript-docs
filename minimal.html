@@ -1,6 +1,9 @@
 <html>
 <head>
 <script src="file://~/Documents/syncanoStuff/javascript_docs/signon_data.jsonp"></script>
+<script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+<script src="http://cdn.jsdelivr.net/syncanojs/3.1.3beta/syncano.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery/2.1.1/jquery.min.js">
 <script type="text/javascript">
   /*
 Minimal application with javascript and syncano
@@ -9,30 +12,41 @@ Minimal application with javascript and syncano
 //Connect to Syncano
 
 var Connect = function(){
-
+var PROJECT_ID = "3968"
 var syncano = SyncanoConnector.getInstance();
 syncano.connect(relevant_data, function(auth){
-    console.log("Connected")
+    document.getElementById("Connected").innerHTML = "Connected";
 });
 
 }
+
+var On = function() {
+	syncano.on('syncano:authorized', function (uuid) {
+            syncano.Subscription.subscribeProject(PROJECT_ID, function (result) {
+                console.log("Subscribed!");
+            })
+        });
+}
 //Save Data
 
-syncano.Data.new( "3968", 'Default', {title: "My title"} , function() { console.log("Saved!") });
+var SaveData = function() {
+syncano.Data.new( PROJECT_ID, 'Default', {title: "My title"} , function() { console.log("Saved!") });
 
 //explain all of this - none of it makes any sense
-syncano.Data.get( "3968", 'Default', {order: 'DESC'}, function(list) {
+syncano.Data.get( PROJECT_ID, 'Default', {order: 'DESC'}, function(list) {
     if (list.length) {
 	console.log('Last object: ' + list[0].title);
     } else {
 	console.log("No stored objects!");
   }
 });
-    
+
+}
 //Subscribe to Real-Time Updates
 
+var RealTime = function() {
 syncano.connect( relevant_data, function(auth) {
-    syncano.Subscription.subscribeProject("3968", function(result) { 
+    syncano.Subscription.subscribeProject(PROJECT_ID, function(result) { 
 	console.log("Suscribed");
     })
 });
@@ -41,11 +55,16 @@ syncano.on('syncano:newdata:project-3968', function(data) {
 	console.log('Data: ' + data);
 	}
     });
-
+}
 </script>
 </head>
 <body>
 
-<input type="button" onclick="
+<input type="button" onclick="Connect()" value="Connect"><br />
+<p id="connected"></p><br />
+
+<input type="button" onclick="SaveData()" value="SaveData"><br />
+<input type="button" onclick="RealTime()" value="RealTime!"><br />
+
 </body>
 </html>
