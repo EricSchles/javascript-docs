@@ -4,19 +4,39 @@
 <script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
 <script src="http://cdn.jsdelivr.net/syncanojs/3.1.3beta/syncano.min.js"></script>
 <script src="http://cdn.jsdelivr.net/jquery/2.1.1/jquery.min.js">
-<script type="text/javascript">
+
+</head>
+<body>
+
+<input type="button" onclick="test();" value="test"><br />
+<input type="button" onclick="Connect();" value="Connect"><br />
+<p id="connected"></p><br />
+
+<input type="button" onclick="SaveData();" value="SaveData"><br />
+<input type="button" onclick="RealTime();" value="RealTime!"><br />
+
+<script>
   /*
 Minimal application with javascript and syncano
 */
 
 //Connect to Syncano
+var PROJECT_ID = "3968"
+
+/*
+var test = function(){
+	document.getElementById("connected").innerHTML = "testing";
+}*/
+
+function test(){
+	document.getElementById("connected").innerHTML = "testing";
+}
 
 var Connect = function(){
-var PROJECT_ID = "3968"
-var syncano = SyncanoConnector.getInstance();
-syncano.connect(relevant_data, function(auth){
-    document.getElementById("Connected").innerHTML = "Connected";
-});
+	var syncano = SyncanoConnector.getInstance();
+	syncano.connect(relevant_data, function(auth){
+	    document.getElementById("connected").innerHTML = "Connected";
+	});
 
 }
 
@@ -57,14 +77,5 @@ syncano.on('syncano:newdata:project-3968', function(data) {
     });
 }
 </script>
-</head>
-<body>
-
-<input type="button" onclick="Connect()" value="Connect"><br />
-<p id="connected"></p><br />
-
-<input type="button" onclick="SaveData()" value="SaveData"><br />
-<input type="button" onclick="RealTime()" value="RealTime!"><br />
-
 </body>
 </html>
